@@ -13,6 +13,6 @@ app.listen(1069, function(err) {
     if (err) {
         console.log(chalk.red(err));
     } else {
-        console.log(chalk.blue('Magic Happens on Port 69'));
+        console.log(chalk.blue('Magic Happens on Port 8080'));
     }
 });
