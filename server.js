@@ -20,6 +20,6 @@ app.listen(1069, function(err) {
 //go to postman and type http://localhost:1069/api/emr and up will appear
 //So now we just have to have it grab some json obects and it will spit them out
 app.get('/api/emr', (req, res)=> {
-    res.send("up");
+    res.send({ "name":"John", "age":30, "health":"Good" });
 });
   
