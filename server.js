@@ -17,9 +17,12 @@ app.listen(1069, function(err) {
         console.log(chalk.blue('Magic Happens on Port 8080'));
     }
 });
+
+// emr is a hard coded electronic medical record object
+emr = [{ "name":"John", "age":30, "health":"Good" },{ "name":"Jim", "age":25, "health":"Okay" }]
 //go to postman and type http://localhost:1069/api/emr and up will appear
 //So now we just have to have it grab some json obects and it will spit them out
 app.get('/api/emr', (req, res)=> {
-    res.send({ "name":"John", "age":30, "health":"Good" });
+    res.send(emr);
 });
-  
+
