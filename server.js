@@ -38,4 +38,25 @@ app.get('/api/emr/:id', (req, res)=> {                  //with doing parameters 
     res.status(500).send("Not found")
 });
 
-//Now we just have to store the objects in memory and make a POST request :)
+app.post('/api/emr/create/:id/:age/:name/:health', (req, res)=> {
+    var id = req.param('id');
+    var age = req.param('age');
+    var name = req.param('name');
+    var health = req.param('health');
+
+///Just need to create an object here
+
+    res.status(200).send(id,age);
+});
+
+//Now we ju/api/emr/st have to store the objects in memory and make a POST request :)
+
+
+
+//used as a POST reference
+// app.post('/login',function(req,res){
+//     var user_name=req.body.user;
+//     var password=req.body.password;
+//     console.log("User name = "+user_name+", password is "+password);
+//     res.end("yes");
+//   });
