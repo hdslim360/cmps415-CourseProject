@@ -42,8 +42,8 @@ app.post('/api/emr/create/:id/:age/:name/:health', (req, res)=> {
     var age = req.param('age');
     var name = req.param('name');
     var health = req.param('health');
-    str['EMR'].push({"id":id, "name":name, "age":age, "health":health });
-    emr = JSON.stringify(str);
+    //str['EMR'].push({"id":id, "name":name, "age":age, "health":health });
+    //emr = JSON.stringify(str);
 
     //emr[2].id = id;     ////////////IMPORTANT It's passing in an ID. I know that much. However I cant create a new object to save my life. I can insert
                         // The ID to an object that is already created no problem 
@@ -55,7 +55,7 @@ app.post('/api/emr/create/:id/:age/:name/:health', (req, res)=> {
     // so
 ///Just need to create an object here
 
-    res.status(200).send(emr[id]);
+    //res.status(200).send(emr[id]);
 });
 
 //Now we ju/api/emr/st have to store the objects in memory and make a POST request :)
