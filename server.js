@@ -42,7 +42,8 @@ app.post('/api/emr/create/:id/:age/:name/:health', (req, res)=> {
     var age = req.param('age');
     var name = req.param('name');
     var health = req.param('health');
-    //str['EMR'].push({"id":id, "name":name, "age":age, "health":health });
+    emr.EMR.push({"id":id, "name":name, "age":age, "health":health });
+    
     //emr = JSON.stringify(str);
 
     //emr[2].id = id;     ////////////IMPORTANT It's passing in an ID. I know that much. However I cant create a new object to save my life. I can insert
