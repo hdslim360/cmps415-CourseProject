@@ -31,15 +31,12 @@ app.get('/api/emr', (req, res)=> {
 //in postman, type http://localhost:1069/api/emr/:Id/  IMPORTANT: this post on stack overflow really helped. The accepted answer really helped me 
 app.get('/api/emr/:id', (req, res)=> {                  //with doing parameters with postman https://stackoverflow.com/questions/37189780/how-to-send-http-url-parameters-in-postman
     var userId = req.param('id')
-     for(var i = 0; i < emr.length; i++){    //loop through and try to find a match 
-         if(emr[i].id == userId){
-             res.send(emr[i]);    
-         }
-    }
+     emr.EMR.find(item => item.id === userId);
+    res.send(emr.EMR[userId]);
     res.status(500).send("Not found");
 });
 
-app.post('/api/emr/create/', (req, res)=> {
+app.post('/api/emr/create/:id/:age/:name/:health', (req, res)=> {
     var str = JSON.parse(emr);
     var id = req.param('id');
     var age = req.param('age');
