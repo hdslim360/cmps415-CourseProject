@@ -13,13 +13,13 @@ app.listen(1069, function(err) {
     if (err) {
         console.log(chalk.red(err));
     } else {
-        console.log(chalk.blue('Magic Happens on Port 8080'));
+        console.log(chalk.blue('Magic Happens on Port 1069'));
     }
 });
 
 // emr is a hard coded electronic medical record object. Buris still didn't email me about what the objects should contain 
 //  var emr = new Array(1000) Do we need to init the array
- emr = [{"id":0, "name":"John", "age":30, "health":"Good" },{"id":1, "name":"Jim", "age":25, "health":"Okay" }]
+ var emr = '{"EMR":[{"id":0, "name":"John", "age":30, "health":"Good" },{"id":1, "name":"Jim", "age":25, "health":"Okay" }]}'
 
 //go to postman and type http://localhost:1069/api/emr and up will appear
 //So now we just have to have it grab some json obects and it will spit them out
@@ -41,10 +41,10 @@ app.get('/api/emr/:id', (req, res)=> {                  //with doing parameters 
 
 app.post('/api/emr/create/:id/', (req, res)=> {
     var id = req.param('id');
-    // var age = req.param('age');
-    // var name = req.param('name');
-    // var health = req.param('health');
-
+    var age = req.param('age');
+    var name = req.param('name');
+    var health = req.param('health');
+    obj['EMR'].push({"id":id, "name":name, "age":age, "health":health });
 
 
     emr[2].id = id;     ////////////IMPORTANT It's passing in an ID. I know that much. However I cant create a new object to save my life. I can insert
