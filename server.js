@@ -56,7 +56,7 @@ app.post('/api/emr/create/:id/:age/:name/:health', (req, res)=> {
     // so
 ///Just need to create an object here
 
-    res.status(200).send(emr[id]);
+    res.status(200).send(emr);
 });
 
 //Now we ju/api/emr/st have to store the objects in memory and make a POST request :)
