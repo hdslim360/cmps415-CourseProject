@@ -39,7 +39,7 @@ app.get('/api/emr/:id', (req, res)=> {                  //with doing parameters 
     res.status(500).send("Not found");
 });
 
-app.post('/api/emr/create/', (req, res)=> {
+app.post('/api/emr/create/:id:age:name:health', (req, res)=> {
     var str = JSON.parse(emr);
     var id = req.param('id');
     var age = req.param('age');
