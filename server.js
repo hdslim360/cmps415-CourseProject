@@ -38,10 +38,10 @@ app.get('/api/emr/:id', (req, res)=> {                  //with doing parameters 
 
 app.post('/api/emr/create/:id/:age/:name/:health', (req, res)=> {
     //var str = JSON.parse(emr);
-    var id = req.params('id');
-    var age = req.params('age');
-    var name = req.params('name');
-    var health = req.params('health');
+    var id = req.param('id');
+    var age = req.param('age');
+    var name = req.param('name');
+    var health = req.param('health');
     emr.EMR.push({"id":id, "name":name, "age":age, "health":health });
     
     //emr = JSON.stringify(str);
@@ -56,7 +56,7 @@ app.post('/api/emr/create/:id/:age/:name/:health', (req, res)=> {
     // so
 ///Just need to create an object here
 
-    //res.status(200).send(emr[id]);
+    res.status(200).send(emr[id]);
 });
 
 //Now we ju/api/emr/st have to store the objects in memory and make a POST request :)
