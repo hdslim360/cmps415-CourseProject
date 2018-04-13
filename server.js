@@ -37,7 +37,7 @@ app.get('/api/emr/:id', (req, res)=> {                  //with doing parameters 
 });
 
 app.post('/api/emr/create/:id/:age/:name/:health', (req, res)=> {
-    var str = JSON.parse(emr);
+    //var str = JSON.parse(emr);
     var id = req.param('id');
     var age = req.param('age');
     var name = req.param('name');
