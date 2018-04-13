@@ -9,7 +9,7 @@ router.get('/test', function(req, res) {
 
 app.use('/api', router);
 
-app.listen(1069, function(err) {
+app.listen(8080, function(err) {
     if (err) {
         console.log(chalk.red(err));
     } else {
