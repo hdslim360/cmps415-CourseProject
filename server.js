@@ -19,7 +19,7 @@ app.listen(process.env.PORT ||5000, function(err) {
     }
 });
 
- var emr = {"EMR":[{"id":0, "name":"John", "age":30, "health":"Good" },{"id":1, "name":"Jim", "age":25, "health":"Okay" }]};
+ var emr = {"EMR":[{"id":0, "name":"John", "age":30, "health":"Good","doctor":"Feel Good" },{"id":1, "name":"Jim", "age":25, "health":"Okay","doctor":"Evil" }]};
 
 //go to postman and type https://murmuring-reaches-97788.herokuapp.com/api/emr up will appear.  
 
@@ -36,15 +36,16 @@ app.get('/api/emr/:id', (req, res)=> {
     res.status(500).send("Not found");
 });
 
-//in postman, type https://murmuring-reaches-97788.herokuapp.com/api/emr/create/:id/:age/:name/:health add params of course
+//in postman, type https://murmuring-reaches-97788.herokuapp.com/api/emr/create/:id/:age/:name/:health/:doctor add params of course
 
-app.post('/api/emr/create/:id/:age/:name/:health', (req, res)=> {
+app.post('/api/emr/create/:id/:age/:name/:health:doctor', (req, res)=> {
 
     var id = req.param('id');
     var age = req.param('age');
     var name = req.param('name');
     var health = req.param('health');
-    emr.EMR.push({"id":id, "name":name, "age":age, "health":health });
+    var doctor = req.param('doctor')
+    emr.EMR.push({"id":id, "name":name, "age":age, "health":health,"doctor":doctor });
     
     res.status(200).send(emr);
 });
