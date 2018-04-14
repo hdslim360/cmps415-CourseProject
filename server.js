@@ -38,7 +38,7 @@ app.get('/api/emr/:id', (req, res)=> {
 
 //in postman, type https://murmuring-reaches-97788.herokuapp.com/api/emr/create/:id/:age/:name/:health/:doctor add params of course
 
-app.post('/api/emr/create/:id/:age/:name/:health:doctor', (req, res)=> {
+app.post('/api/emr/create/:id/:age/:name/:health/:doctor', (req, res)=> {
 
     var id = req.param('id');
     var age = req.param('age');
