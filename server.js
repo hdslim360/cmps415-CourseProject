@@ -50,3 +50,11 @@ app.post('/api/emr/create/:id/:age/:name/:health/:doctor', (req, res)=> {
     res.status(200).send(emr);
 });
 
+app.delete('/api/emr/:id', (req, res)=> {                  
+    var userId = req.param('id')
+    emr.EMR.find(item => item.id === userId);
+    res.send(emr.EMR[userId]);
+    emr.EMR[userId] = null;
+    res.status(500).send("Not found");
+});
+
