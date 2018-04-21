@@ -110,7 +110,17 @@ app.listen(process.env.PORT ||5000, function(err) {
                 
               });
 
-              var emr = null;
+              //in postman, type https://murmuring-reaches-97788.herokuapp.com/api/emr/:id and add an int Id for the param
+app.get('/api/emr/:id', (req, res)=> {                  
+  var userId = req.param('id')
+  userId = parseInt(userId);
+   emrs.find( { _id: userId }).toArray(function(err, result){
+    if(err) throw err;
+    res.status(200).send(result);
+   });
+  
+});
+              
 app.get('/api/emr', (req, res)=> {
   emrs.find().toArray(function(err, result) {
     if (err) throw err;
@@ -120,15 +130,6 @@ app.get('/api/emr', (req, res)=> {
     
 });
 
-//in postman, type https://murmuring-reaches-97788.herokuapp.com/api/emr/:id and add an int Id for the param
-app.get('/api/emr/:id', (req, res)=> {                  
-  var userId = req.param('id')
-   emrs.find({}, { _id: userId }).toArray(function(err, result){
-    if(err) throw err;
-    res.status(200).send(result);
-   });
-  
-});
                //Since this is an example, we'll clean up after ourselves.
               //  emrs.drop(function (err) {
               //    if(err) throw err;
