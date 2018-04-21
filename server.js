@@ -23,26 +23,28 @@ app.listen(process.env.PORT ||5000, function(err) {
     
     let seedData = [
       {   
-        decade: '1970s',   
-        artist: 'Debby Boone',   
-        song: 'You Light Up My Life',   
-        weeksAtOne: 10    
+        _id: 1,
+        name: 'John',   
+        age: 30,   
+        health: 'good',   
+        doctor: 'Love'    
       },   
       {
-        decade: '1980s',
-        artist: 'Olivia Newton-John',
-        song: 'Physical',
-        weeksAtOne: 10
+        _id:2,
+        name: 'Jim',
+        age: 25,
+        health: 'good',
+        doctor: 'Feel Good'
       },
       {
-        decade: '1990s',
-        artist: 'Mariah Carey',
-        song: 'One Sweet Day',    
-        weeksAtOne: 16
+        _id:3,
+        name: 'Joe',
+        age: 3,
+        health: 'good',    
+        doctor: 'Evil'
       }    
     ];
     
-    // Standard URI format: mongodb://[dbuser:dbpassword@]host:port/dbname
     
     let uri = 'mongodb://heroku_llk6v74p:bd13o2m17duot0tjfpd2ad4r13@ds111565.mlab.com:11565/heroku_llk6v74p';
     console.log('good1')
@@ -58,15 +60,15 @@ app.listen(process.env.PORT ||5000, function(err) {
       let db = client.db('heroku_llk6v74p')
     
       /*
-       * First we'll add a few songs. Nothing is required to create the
-       * songs collection; it is created automatically when we insert.
+       * First we'll add a few emrs. Nothing is required to create the
+       * emrs collection; it is created automatically when we insert.
        */
     
-      let songs = db.collection('songs');
+      let emrs = db.collection('emr');
     
        // Note that the insert method can take either an array or a dict.
     
-      songs.insert(seedData, function(err, result) {
+      emrs.insert(seedData, function(err, result) {
     
         if(err) throw err;
     
@@ -75,9 +77,9 @@ app.listen(process.env.PORT ||5000, function(err) {
          * to the hit "One Sweet Day".
          */
     
-        songs.update(
-          { song: 'One Sweet Day' },
-          { $set: { artist: 'Mariah Carey ft. Boyz II Men' } },
+        emrs.update(
+          { health: 'One Sweet Day' },
+          { $set: { age: 'Mariah Carey ft. Boyz II Men' } },
           function (err, result) {
     
             if(err) throw err;
@@ -87,26 +89,31 @@ app.listen(process.env.PORT ||5000, function(err) {
              * more weeks at number 1.
              */
     
-            songs.find({ weeksAtOne : { $gte: 10 } }).sort({ decade: 1 }).toArray(function (err, docs) {
+            emrs.find({ doctor : { $gte: 10 } }).sort({ name: 1 }).toArray(function (err, docs) {
     
               if(err) throw err;
     
               docs.forEach(function (doc) {
                 console.log(
-                  'In the ' + doc['decade'] + ', ' + doc['song'] + ' by ' + doc['artist'] +
-                  ' topped the charts for ' + doc['weeksAtOne'] + ' straight weeks.'
+                  'In the ' + doc['name'] + ', ' + doc['health'] + ' by ' + doc['age'] +
+                  ' topped the charts for ' + doc['doctor'] + ' straight weeks.'
                 );
               });
-    
-              // Since this is an example, we'll clean up after ourselves.
-              songs.drop(function (err) {
-                if(err) throw err;
-    
-                // Only close the connection when your app is terminating.
-                client.close(function (err) {
-                  if(err) throw err;
-                });
+              
+              emrs.find().toArray(function(err, result) {
+                if (err) throw err;
+                console.log(result);
+                
               });
+               //Since this is an example, we'll clean up after ourselves.
+               emrs.drop(function (err) {
+                 if(err) throw err;
+    
+                 // Only close the connection when your app is terminating.
+                 client.close(function (err) {
+                   if(err) throw err;
+                 });
+               });
             });
           }
         );
@@ -116,7 +123,7 @@ app.listen(process.env.PORT ||5000, function(err) {
     
 });
 
- var emr = {"EMR":[{"id":0, "name":"John", "age":30, "health":"Good","doctor":"Feel Good" },{"id":1, "name":"Jim", "age":25, "health":"Okay","doctor":"Evil" }]};
+//  var emr = {"EMR":[{"id":0, "name":"John", "age":30, "health":"Good","doctor":"Feel Good" },{"id":1, "name":"Jim", "age":25, "health":"Okay","doctor":"Evil" }]};
 
 //go to postman and type https://murmuring-reaches-97788.herokuapp.com/api/emr up will appear.  
 
