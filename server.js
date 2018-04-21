@@ -67,69 +67,81 @@ app.listen(process.env.PORT ||5000, function(err) {
       let emrs = db.collection('emr');
     
        // Note that the insert method can take either an array or a dict.
+
+       
     
-      emrs.insert(seedData, function(err, result) {
-    
-        if(err) throw err;
+      
     
         /*
          * Then we need to give Boyz II Men credit for their contribution
          * to the hit "One Sweet Day".
          */
     
-        emrs.update(
-          { health: 'One Sweet Day' },
-          { $set: { age: 'Mariah Carey ft. Boyz II Men' } },
-          function (err, result) {
+        // emrs.update(
+        //   { health: 'One Sweet Day' },
+        //   { $set: { age: 'Mariah Carey ft. Boyz II Men' } },
+        //   function (err, result) {
     
-            if(err) throw err;
+        //     if(err) throw err;
     
             /*
              * Finally we run a query which returns all the hits that spend 10 or
              * more weeks at number 1.
              */
     
-            emrs.find({ doctor : { $gte: 10 } }).sort({ name: 1 }).toArray(function (err, docs) {
+            // emrs.find({ doctor : { $gte: 10 } }).sort({ name: 1 }).toArray(function (err, docs) {
     
-              if(err) throw err;
+            //   if(err) throw err;
     
-              docs.forEach(function (doc) {
-                console.log(
-                  'In the ' + doc['name'] + ', ' + doc['health'] + ' by ' + doc['age'] +
-                  ' topped the charts for ' + doc['doctor'] + ' straight weeks.'
-                );
-              });
+            //   docs.forEach(function (doc) {
+            //     console.log(
+            //       'In the ' + doc['name'] + ', ' + doc['health'] + ' by ' + doc['age'] +
+            //       ' topped the charts for ' + doc['doctor'] + ' straight weeks.'
+            //     );
+            //   });
               
               emrs.find().toArray(function(err, result) {
                 if (err) throw err;
                 console.log(result);
                 
               });
-               //Since this is an example, we'll clean up after ourselves.
-               emrs.drop(function (err) {
-                 if(err) throw err;
+
+              var emr = null;
+app.get('/api/emr', (req, res)=> {
+  emrs.find().toArray(function(err, result) {
+    if (err) throw err;
+    console.log(result);
+    res.status(200).send(result);
+  });
     
-                 // Only close the connection when your app is terminating.
-                 client.close(function (err) {
-                   if(err) throw err;
-                 });
-               });
+});
+               //Since this is an example, we'll clean up after ourselves.
+              //  emrs.drop(function (err) {
+              //    if(err) throw err;
+    
+               
+              //  });
+              //go to postman and type https://murmuring-reaches-97788.herokuapp.com/api/emr up will appear.  
+
             });
           }
         );
-      });
-    });
-    
-    
-});
+    //   });
+    // });
 
 //  var emr = {"EMR":[{"id":0, "name":"John", "age":30, "health":"Good","doctor":"Feel Good" },{"id":1, "name":"Jim", "age":25, "health":"Okay","doctor":"Evil" }]};
 
 //go to postman and type https://murmuring-reaches-97788.herokuapp.com/api/emr up will appear.  
-
-app.get('/api/emr', (req, res)=> {
-    res.status(200).send(emr);
-});
+// var emr = null;
+// app.get('/api/emr', (req, res)=> {
+//   emrs.find().toArray(function(err, result) {
+//     if (err) throw err;
+//     console.log(result);
+//     emr = reslut;
+    
+//   });
+//     res.status(200).send(emr);
+// });
 
 
 //in postman, type https://murmuring-reaches-97788.herokuapp.com/api/emr/:id and add an int Id for the param
@@ -162,3 +174,7 @@ app.delete('/api/emr/:id', (req, res)=> {
     res.status(500).send("Not found");
 });
 
+  // Only close the connection when your app is terminating.
+                //  client.close(function (err) {
+                //    if(err) throw err;
+                //  });
