@@ -17,6 +17,10 @@ app.listen(process.env.PORT ||5000, function(err) {
     } else {
         console.log(chalk.blue('Are you ready to rock!?!'));
     }
+    // So alot of this code was copied from here
+    //https://github.com/mongolab/mongodb-driver-examples/blob/master/nodejs/nodeSimpleExample.js
+    //and modified :)
+
     const mongodb = require('mongodb');
 
     // Create seed data
@@ -115,6 +119,16 @@ app.get('/api/emr', (req, res)=> {
   });
     
 });
+
+//in postman, type https://murmuring-reaches-97788.herokuapp.com/api/emr/:id and add an int Id for the param
+app.get('/api/emr/:id', (req, res)=> {                  
+  var userId = req.param('id')
+   emrs.find({}, { _id: userId }).toArray(function(err, result){
+    if(err) throw err;
+    res.status(200).send(result);
+   });
+  
+});
                //Since this is an example, we'll clean up after ourselves.
               //  emrs.drop(function (err) {
               //    if(err) throw err;
@@ -145,12 +159,12 @@ app.get('/api/emr', (req, res)=> {
 
 
 //in postman, type https://murmuring-reaches-97788.herokuapp.com/api/emr/:id and add an int Id for the param
-app.get('/api/emr/:id', (req, res)=> {                  
-    var userId = req.param('id')
-     emr.EMR.find(item => item.id === userId);
-    res.send(emr.EMR[userId]);
-    res.status(500).send("Not found");
-});
+// app.get('/api/emr/:id', (req, res)=> {                  
+//     var userId = req.param('id')
+//      emr.EMR.find(item => item.id === userId);
+//     res.send(emr.EMR[userId]);
+//     res.status(500).send("Not found");
+// });
 
 //in postman, type https://murmuring-reaches-97788.herokuapp.com/api/emr/create/:id/:age/:name/:health/:doctor add params of course
 
