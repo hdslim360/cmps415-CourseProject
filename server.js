@@ -17,6 +17,36 @@ app.listen(process.env.PORT ||5000, function(err) {
     } else {
         console.log(chalk.blue('Are you ready to rock!?!'));
     }
+
+    
+    const MongoClient = require('mongodb').MongoClient;
+const assert = require('assert');
+
+let seedData = {"EMR":[{"id":0, "name":"John", "age":30, "health":"Good","doctor":"Feel Good" },{"id":1, "name":"Jim", "age":25, "health":"Okay","doctor":"Evil" }]};
+
+// Connection URL
+const url = 'mongodb://heroku_llk6v74p:bd13o2m17duot0tjfpd2ad4r13@ds111565.mlab.com:11565/heroku_llk6v74p';
+
+// Database Name
+const dbName = 'MONGODB_URI';
+
+// Use connect method to connect to the server
+MongoClient.connect(url, function(err, client) {
+  assert.equal(null, err);
+  console.log("Connected successfully to server");
+
+  const db = client.db(dbName);
+
+  let emrData = db.collection('emrData')
+
+  emrData.insert(seedData, function(err, result){
+      if(err) throw err;
+  })
+
+  
+
+  client.close();
+    });
 });
 
  var emr = {"EMR":[{"id":0, "name":"John", "age":30, "health":"Good","doctor":"Feel Good" },{"id":1, "name":"Jim", "age":25, "health":"Okay","doctor":"Evil" }]};
