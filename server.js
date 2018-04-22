@@ -161,13 +161,32 @@ app.delete('/api/emr/:id', (req, res)=> {
   var myquery = { _id: userId };
   emrs.deleteOne(myquery, function(err, result) {
     if (err) throw err;  
-    res.status(200).send(result)
+    res.status(200).send(result);
   });
   
 });
 
     
+app.put('/api/emr/update/:id',(req, res) =>{
 
+  var id = req.param('id');
+  var age = req.param('age');
+  var name = req.param('name');
+  var health = req.param('health');
+  var doctor = req.param('doctor')
+  patientId = parseInt(id);
+  age = parseInt(age);
+
+  var query = { _id: patientId };
+  var newvalues = { $set: {name: name, age: age, health: health, doctor: doctor} };
+  emrs.updateOne(query, newvalues, function(err, result) {
+    if (err) throw err;
+    emrs.find( { _id: patientId }).toArray(function(err, result){
+      if(err) throw err;
+      res.status(200).send(result);
+     });
+  });
+});
                //Since this is an example, we'll clean up after ourselves.
               //  emrs.drop(function (err) {
               //    if(err) throw err;
