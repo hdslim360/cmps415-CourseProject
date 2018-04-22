@@ -120,7 +120,8 @@ app.get('/api/emr/:id', (req, res)=> {
    });
   
 });
-              
+          
+  //go to postman and type https://murmuring-reaches-97788.herokuapp.com/api/emr up will appear.  
 app.get('/api/emr', (req, res)=> {
   emrs.find().toArray(function(err, result) {
     if (err) throw err;
@@ -129,6 +130,43 @@ app.get('/api/emr', (req, res)=> {
   });
     
 });
+
+//in postman, type https://murmuring-reaches-97788.herokuapp.com/api/emr/create/:id/:age/:name/:health/:doctor add params of course
+app.post('/api/emr/create/:id/:age/:name/:health/:doctor', (req, res)=> {
+
+  var id = req.param('id');
+  var age = req.param('age');
+  var name = req.param('name');
+  var health = req.param('health');
+  var doctor = req.param('doctor')
+  id = parseInt(id);
+  age = parseInt(age);
+  var data = [
+    {   
+      _id: id,
+      name: name,   
+      age: age,   
+      health: health,   
+      doctor: doctor   
+    },]
+    emrs.insert(data, function(err, result) {
+      if (err) throw err;
+      res.status(200).send(data);
+    }); 
+});
+
+app.delete('/api/emr/:id', (req, res)=> {
+  var userId = req.param('id')
+  userId = parseInt(userId);
+  var myquery = { _id: userId };
+  emrs.deleteOne(myquery, function(err, result) {
+    if (err) throw err;  
+    res.status(200).send(result)
+  });
+  
+});
+
+    
 
                //Since this is an example, we'll clean up after ourselves.
               //  emrs.drop(function (err) {
@@ -169,25 +207,14 @@ app.get('/api/emr', (req, res)=> {
 
 //in postman, type https://murmuring-reaches-97788.herokuapp.com/api/emr/create/:id/:age/:name/:health/:doctor add params of course
 
-app.post('/api/emr/create/:id/:age/:name/:health/:doctor', (req, res)=> {
 
-    var id = req.param('id');
-    var age = req.param('age');
-    var name = req.param('name');
-    var health = req.param('health');
-    var doctor = req.param('doctor')
-    emr.EMR.push({"id":id, "name":name, "age":age, "health":health,"doctor":doctor });
-    
-    res.status(200).send(emr);
-});
-
-app.delete('/api/emr/:id', (req, res)=> {                  
-    var userId = req.param('id')
-    emr.EMR.find(item => item.id === userId);
-    res.send(emr.EMR[userId]);
-    emr.EMR[userId] = null;
-    res.status(500).send("Not found");
-});
+// app.delete('/api/emr/:id', (req, res)=> {                  
+//     var userId = req.param('id')
+//     emr.EMR.find(item => item.id === userId);
+//     res.send(emr.EMR[userId]);
+//     emr.EMR[userId] = null;
+//     res.status(500).send("Not found");
+// });
 
   // Only close the connection when your app is terminating.
                 //  client.close(function (err) {
