@@ -50,7 +50,9 @@ app.listen(process.env.PORT ||5000, function(err) {
     ];
     
 
-
+    var locked = false; //Global variable to check to see if a user can access the database
+    //Basically this first iteration I came up with locks the entire DB if someone is using it.
+    //Very bad practice right now but it's a start
     
     let uri = 'mongodb://heroku_llk6v74p:bd13o2m17duot0tjfpd2ad4r13@ds111565.mlab.com:11565/heroku_llk6v74p';
     console.log('good1')
@@ -95,19 +97,23 @@ app.listen(process.env.PORT ||5000, function(err) {
 
 
               //in postman, type https://murmuring-reaches-97788.herokuapp.com/api/emr/:id and add an int Id for the param
-app.get('/api/emr/:id', (req, res)=> {                  
+app.get('/api/emr/:id', (req, res)=> {    
+  if(locked){
+    res.status(200).send("locked")
+  }      
   var userId = req.param('id')
   userId = parseInt(userId);
    emrs.find( { _id: userId }).toArray(function(err, result){
     if(err) throw err;
+    locked = false; // turns lock off
     res.status(200).send(result);
    });
   
 });
           
   //go to postman and type https://murmuring-reaches-97788.herokuapp.com/api/emr up will appear.  
-app.get('/api/emr', (req, res)=> {
-  emrs.find().toArray(function(err, result) {
+app.get('/api/emr', (req, res)=> { 
+  emrs.find().toArray(function(err, result) { // no lock here. just trying read data is okay
     if (err) throw err;
     console.log(result);
     res.status(200).send(result);
@@ -117,7 +123,11 @@ app.get('/api/emr', (req, res)=> {
 
 //in postman, type https://murmuring-reaches-97788.herokuapp.com/api/emr/create/:id/:age/:name/:health/:doctor add params of course
 app.post('/api/emr/create/:id/:age/:name/:health/:doctor', (req, res)=> {
-
+  if(locked){ // if locked return locked
+    res.status(200).send2("locked")
+    return;
+  }
+  locked = true; // lock the db
   var id = req.param('id');
   var age = req.param('age');
   var name = req.param('name');
@@ -135,17 +145,24 @@ app.post('/api/emr/create/:id/:age/:name/:health/:doctor', (req, res)=> {
     },]
     emrs.insert(data, function(err, result) {
       if (err) throw err;
+      locked = false; // turn the lock off
       res.status(200).send(data);
     }); 
 });
 
 //go to postman and type https://murmuring-reaches-97788.herokuapp.com/api/emr/:Id and enter params
 app.delete('/api/emr/:id', (req, res)=> {
+  if(locked){ // if locked return locked
+    res.status(200).send("locked")
+    return;
+  } 
+  locked = true;
   var userId = req.param('id')
   userId = parseInt(userId);
   var myquery = { _id: userId };
   emrs.deleteOne(myquery, function(err, result) {
     if (err) throw err;  
+    locked = false; // turn the lock off
     res.status(200).send(result);
   });
   
@@ -153,7 +170,11 @@ app.delete('/api/emr/:id', (req, res)=> {
 
    //go to postman and type https://murmuring-reaches-97788.herokuapp.com/api/emr/:Id and enter params
 app.put('/api/emr/update/:id',(req, res) =>{
-
+  if(locked){// if locked return locked
+    res.status(200).send("locked")
+    return;
+  } 
+  locked = true;
   var id = req.param('id');
   var age = req.param('age');
   var name = req.param('name');
@@ -161,13 +182,13 @@ app.put('/api/emr/update/:id',(req, res) =>{
   var doctor = req.param('doctor')
   patientId = parseInt(id);
   age = parseInt(age);
-
   var query = { _id: patientId };
   var newvalues = { $set: {name: name, age: age, health: health, doctor: doctor} };
   emrs.updateOne(query, newvalues, function(err, result) {
     if (err) throw err;
     emrs.find( { _id: patientId }).toArray(function(err, result){
       if(err) throw err;
+      locked = false; // turn the lock off
       res.status(200).send(result);
      });
   });
