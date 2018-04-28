@@ -31,21 +31,29 @@ app.listen(process.env.PORT ||5000, function(err) {
         name: 'John',   
         age: 30,   
         health: 'good',   
-        doctor: 'Love'    
+        doctor: 'Love',
+        ts : null,
+        a_id : null
+
       },   
       {
         _id:2,
         name: 'Patrick',
         age: 25,
         health: 'good',
-        doctor: 'Feel Good'
+        doctor: 'Feel Good',
+        ts : null,
+        a_id : null
+
       },
       {
         _id:3,
         name: 'Ghassan',
         age: 3,
         health: 'good',    
-        doctor: 'Evil'
+        doctor: 'Evil',
+        ts : null,
+        a_id : null
       }    
     ];
     
@@ -62,22 +70,22 @@ app.listen(process.env.PORT ||5000, function(err) {
       console.log('good2')
     
       let db = client.db('heroku_llk6v74p')
-    
+      //db.client.
    
     
       let emrs = db.collection('emr');
 
 
        
-      //   emrs.insert(seedData, function(err, result) {
+        //emrs.insert(seedData, function(err, result) {
 
-      //    if(err) throw err;                              //
-      //  });                                               //In case we need to drop or resead the db
-      //                                                    //
+          //if(err) throw err;                              //
+        //});                                               //In case we need to drop or resead the db
+                                                          //
       
-      // emrs.drop(function (err) {
-      //   if(err) throw err;
-      // });
+       emrs.drop(function (err) {
+         if(err) throw err;
+       });
               
               emrs.find().toArray(function(err, result) {
                 if (err) throw err;
