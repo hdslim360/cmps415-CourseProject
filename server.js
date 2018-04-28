@@ -77,15 +77,15 @@ app.listen(process.env.PORT ||5000, function(err) {
 
 
        
-        //emrs.insert(seedData, function(err, result) {
+        emrs.insert(seedData, function(err, result) {
 
-          //if(err) throw err;                              //
-        //});                                               //In case we need to drop or resead the db
+        if(err) throw err;                              //
+        });                                               //In case we need to drop or resead the db
                                                           //
       
-       emrs.drop(function (err) {
-         if(err) throw err;
-       });
+       //emrs.drop(function (err) {
+       //  if(err) throw err;
+      // });
               
               emrs.find().toArray(function(err, result) {
                 if (err) throw err;
