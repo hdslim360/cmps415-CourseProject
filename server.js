@@ -70,11 +70,11 @@ app.listen(process.env.PORT ||5000, function(err) {
       console.log('good2')
     
       let db = client.db('heroku_llk6v74p')
-      //db.client.
+      
    
     
-      let emrs = db.collection('emr');
-
+      let emrs = db.collection('emr')
+      
 
        
        //emrs.insert(seedData, function(err, result) {
@@ -103,14 +103,33 @@ app.listen(process.env.PORT ||5000, function(err) {
               //It's not like copied verbatim. Just Where we got the ideas for the functions from
               //-----------------------------------------------------------------
 
+              var timeStamp;
 
               //in postman, type https://murmuring-reaches-97788.herokuapp.com/api/emr/:id and add an int Id for the param
 app.get('/api/emr/:id', (req, res)=> {    
-  if(locked){
-    res.status(200).send("locked")
-  }      
-  var userId = req.param('id')
+  var userId = req.param('id');
   userId = parseInt(userId);
+
+  emrs.find( { _id: userId }).toArray(function(err, result){// find Doc U want to edit
+    if(err) throw err;
+    console.log(result);
+   });
+
+   //if ts == null we good!
+timeStamp = Date.now;
+  var query = { _id: userId }; // insert time stamp save to global variable 
+  
+  var newvalues = { $set: {ts:timeStamp}};
+  emrs.updateOne(query, newvalues, function(err, result) {
+    if (err) throw err;
+    emrs.find( { _id: userId }).toArray(function(err, result){
+      if(err) throw err;
+      console.log(result);
+     });
+  });
+
+
+
    emrs.find( { _id: userId }).toArray(function(err, result){
     if(err) throw err;
     locked = false; // turns lock off
