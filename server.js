@@ -107,16 +107,17 @@ app.get('/api/emr/:id/:aId', (req, res)=> {
   var patientId = req.param('id');
   patientId = parseInt(patientId);
   aId = parseInt(aId);
-  emrs.find( { _id: patientId },{inUse:1}).toArray(function(err, result){
+  var query = { _id: patientId };
+  emrs.findOne( {query},{inUse: 1}).toArray(function(err, result){
     if(err) throw err;
   // Check to see if the record is in use
-  if(result[5] == true){
-    res.status(200).send("Record is in use")
+  if(result.inUse[0] == true){
+    res.status(200).send(result);
     return;
   }
    });
 
-  var query = { _id: patientId };
+  
   var newvalues = { $set: {inUse:true, aId: aId} };
   emrs.updateOne(query, newvalues, function(err, result) { // insert inUse and user ID into record
     if (err) throw err;
