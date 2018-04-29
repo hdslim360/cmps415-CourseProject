@@ -110,8 +110,9 @@ app.get('/api/emr/:id/:aId', (req, res)=> {
   emrs.find( { _id: patientId },{inUse:1}).toArray(function(err, result){
     if(err) throw err;
   // Check to see if the record is in use
-  if(result == true){
+  if(result[6] == true){
     res.status(200).send("Record is in use")
+    return;
   }
    });
 
