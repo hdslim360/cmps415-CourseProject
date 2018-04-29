@@ -134,7 +134,7 @@ app.get('/api/emr/:id/:aId', (req, res)=> {
 
 
   
-});
+});                                                                                                                                             
           
   //go to postman and type https://murmuring-reaches-97788.herokuapp.com/api/emr up will appear.  
 app.get('/api/emr', (req, res)=> {
@@ -192,15 +192,30 @@ app.put('/api/emr/update/:id',(req, res) =>{
   var doctor = req.param('doctor')
   patientId = parseInt(id);
   age = parseInt(age);
+  
+  var use="";
+  var aId = req.param('aId')
+  var patientId = req.param('id');
+  patientId = parseInt(patientId);
+  aId = parseInt(aId);
+  emrs.find( { _id: patientId },{ _id:0 ,inUse:1}).toArray(function(err, result){
+    if(err) throw err;
+    use = JSON.stringify(result); 
+    if((use.includes("true"))&&(use.includes(aid))){
+      var query = { _id: patientId };
+      var newvalues = { $set: {name: name, age: age, health: health, doctor: doctor, inUse: false, aId:""} };
+      emrs.updateOne(query, newvalues, function(err, result) { // insert inUse and user ID into record
+          if (err) throw err;
+      });
+      emrs.find( { _id: patientId }).toArray(function(err, result){
+        if(err) throw err;
+        res.status(200).send(result);  // record is got! and is currently in use. the only person that can use it is the one with the uId
+   });
+  
+     }else{
+       res.status(200).send("The record is in use");
+     }
 
-  var query = { _id: patientId };
-  var newvalues = { $set: {name: name, age: age, health: health, doctor: doctor} };
-  emrs.updateOne(query, newvalues, function(err, result) {
-    if (err) throw err;
-    emrs.find( { _id: patientId }).toArray(function(err, result){
-      if(err) throw err;
-      res.status(200).send(result);
-     });
   });
 });
 
