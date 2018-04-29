@@ -192,11 +192,9 @@ app.put('/api/emr/update/:id/:aId',(req, res) =>{
   var doctor = req.param('doctor')
   patientId = parseInt(id);
   age = parseInt(age);
-  
+  aId = parseInt(aId);
   var use="";
   
-  
-  aId = parseInt(aId);
   emrs.find( { _id: patientId },{ _id:0 ,inUse:1}).toArray(function(err, result){
     if(err) throw err;
     use = JSON.stringify(result); 
@@ -208,7 +206,7 @@ app.put('/api/emr/update/:id/:aId',(req, res) =>{
       });
       emrs.find( { _id: patientId }).toArray(function(err, result){
         if(err) throw err;
-        res.status(200).send(result);  // record is got! and is currently in use. the only person that can use it is the one with the uId
+        res.status(200).send(result); 
    });
   
      }else{
