@@ -183,8 +183,8 @@ app.delete('/api/emr/:id', (req, res)=> {
 });
 
    //go to postman and type https://murmuring-reaches-97788.herokuapp.com/api/emr/:Id and enter params
-app.put('/api/emr/update/:id',(req, res) =>{
-
+app.put('/api/emr/update/:id/:aId',(req, res) =>{
+  var aId = req.param('aId')
   var id = req.param('id');
   var age = req.param('age');
   var name = req.param('name');
@@ -194,16 +194,15 @@ app.put('/api/emr/update/:id',(req, res) =>{
   age = parseInt(age);
   
   var use="";
-  var aId = req.param('aId')
-  var patientId = req.param('id');
-  patientId = parseInt(patientId);
+  
+  
   aId = parseInt(aId);
   emrs.find( { _id: patientId },{ _id:0 ,inUse:1}).toArray(function(err, result){
     if(err) throw err;
     use = JSON.stringify(result); 
-    if((use.includes("true"))&&(use.includes(aid))){
+    if((use.includes("true"))&&(use.includes(aId))){
       var query = { _id: patientId };
-      var newvalues = { $set: {name: name, age: age, health: health, doctor: doctor, inUse: false, aId:""} };
+      var newvalues = { $set: {name: name, age: age, health: health, doctor: doctor, inUse: false, aId: null} };
       emrs.updateOne(query, newvalues, function(err, result) { // insert inUse and user ID into record
           if (err) throw err;
       });
