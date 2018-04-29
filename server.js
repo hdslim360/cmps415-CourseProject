@@ -176,7 +176,7 @@ app.delete('/api/emr/:id/:aId', (req, res)=> {
     if(use.includes(aId)){
       emrs.deleteOne(myquery, function(err, result) {
         if (err) throw err;  
-        res.status(200).send(result);
+        res.status(200).send("The record has been Deleted");
       });
     }else{
       res.status(200).send("The Record is in use and connot be deleted");
