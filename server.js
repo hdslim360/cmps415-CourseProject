@@ -45,7 +45,7 @@ app.listen(process.env.PORT ||5000, function(err) {
       {
         _id:3,
         name: 'Ghassan',
-        age: 3,
+        age: 30,
         health: 'good',    
         doctor: 'Evil',
 
@@ -67,7 +67,7 @@ app.listen(process.env.PORT ||5000, function(err) {
       let db = client.db('heroku_llk6v74p')
       
    
-    
+      
       let emrs = db.collection('emr')
       db.emrs.createIndex( { "lastModifiedDate": Date.now }, { expireAfterSeconds: 60 } )
        //emrs.insert(seedData, function(err, result) {
@@ -76,9 +76,9 @@ app.listen(process.env.PORT ||5000, function(err) {
         //});                                               //In case we need to drop or resead the db
                                                           //
       
-       //emrs.drop(function (err) {
-       //  if(err) throw err;
-      // });
+       emrs.drop(function (err) {
+         if(err) throw err;
+       });
               emrs.find().toArray(function(err, result) {
                 if (err) throw err;
                 console.log(result);
