@@ -156,7 +156,7 @@ app.post('/api/emr/create/:id/:age/:name/:health/:doctor', (req, res)=> {
       health: health,   
       doctor: doctor, 
       inUse: false,
-      aid: null   
+      aId: null   
     },]
     emrs.insert(data, function(err, result) {
       if (err) throw err;
@@ -175,6 +175,7 @@ app.delete('/api/emr/:id/:aId', (req, res)=> {
     if(err) throw err;
     use = JSON.stringify(result); 
     var myquery = { _id: patientId };
+    emrs.deleteOne(myquery, function(err, result){});
     if(use.includes(aId)){
       emrs.deleteOne(myquery, function(err, result) {
         if (err) throw err;  
