@@ -172,6 +172,7 @@ app.delete('/api/emr/:id/:aId', (req, res)=> {
   emrs.find( { _id: patientId },{ _id:0 ,inUse:1}).toArray(function(err, result){
     if(err) throw err;
     use = JSON.stringify(result); 
+    var myquery = { _id: patientId };
     if(use.includes(aId)){
       emrs.deleteOne(myquery, function(err, result) {
         if (err) throw err;  
