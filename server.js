@@ -111,7 +111,8 @@ app.get('/api/emr/:id/:aId', (req, res)=> {
   emrs.find(query).toArray(function(err, result){
     if(err) throw err;
   // Check to see if the record is in use
-  if(result.inUse == true){
+  
+  if(result.inUse == 'true'){
     res.status(200).send(result);
     return;
   }
