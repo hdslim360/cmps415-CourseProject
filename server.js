@@ -70,10 +70,10 @@ app.listen(process.env.PORT ||5000, function(err) {
       
       let emrs = db.collection('emr')
       db.emrs.createIndex( { "lastModifiedDate": Date.now }, { expireAfterSeconds: 60 } )
-       emrs.insert(seedData, function(err, result) {
+       //emrs.insert(seedData, function(err, result) {
 
-        if(err) throw err;                              //
-        });                                               //In case we need to drop or resead the db
+        //if(err) throw err;                              //
+        //});                                               //In case we need to drop or resead the db
                                                           //
       
       // emrs.drop(function (err) {
