@@ -102,7 +102,6 @@ app.listen(process.env.PORT ||5000, function(err) {
 
               //in postman, type https://murmuring-reaches-97788.herokuapp.com/api/emr/:id and add an int Id for the param
 app.get('/api/emr/:id/:aId', (req, res)=> {
-  var isRecordInUse = false;
   var use="";
   var aId = req.param('aId')
   var patientId = req.param('id');
@@ -112,7 +111,6 @@ app.get('/api/emr/:id/:aId', (req, res)=> {
     if(err) throw err;
     use = JSON.stringify(result); 
     if(use.includes("true")){
-      isRecordInUse = true;
       res.status(200).send("Locked");
      }else{
       var query = { _id: patientId };
@@ -125,15 +123,9 @@ app.get('/api/emr/:id/:aId', (req, res)=> {
         res.status(200).send(result);  // record is got! and is currently in use. the only person that can use it is the one with the uId
    });
   
-     }
+     }  
    
-   
-   
-   
-    });
-
-
-  
+    });  
 });                                                                                                                                             
           
   //go to postman and type https://murmuring-reaches-97788.herokuapp.com/api/emr up will appear.  
@@ -171,16 +163,26 @@ app.post('/api/emr/create/:id/:age/:name/:health/:doctor', (req, res)=> {
 });
 
 //go to postman and type https://murmuring-reaches-97788.herokuapp.com/api/emr/:Id and enter params
-app.delete('/api/emr/:id', (req, res)=> {
-  var userId = req.param('id')
-  userId = parseInt(userId);
-  var myquery = { _id: userId };
-  emrs.deleteOne(myquery, function(err, result) {
-    if (err) throw err;  
-    res.status(200).send(result);
+app.delete('/api/emr/:id/:aId', (req, res)=> {
+  var use="";
+  var aId = req.param('aId');
+  var patientId = req.param('id');
+  patientId = parseInt(patientId);
+  aId = parseInt(aId);
+  emrs.find( { _id: patientId },{ _id:0 ,inUse:1}).toArray(function(err, result){
+    if(err) throw err;
+    use = JSON.stringify(result); 
+    if(use.includes(aId)){
+      emrs.deleteOne(myquery, function(err, result) {
+        if (err) throw err;  
+        res.status(200).send(result);
+      });
+    }else{
+      res.status(200).send("The Record is in use and connot be deleted");
+    }
   });
-  
 });
+
 
    //go to postman and type https://murmuring-reaches-97788.herokuapp.com/api/emr/:Id and enter params
 app.put('/api/emr/update/:id/:aId',(req, res) =>{
@@ -217,7 +219,7 @@ app.put('/api/emr/update/:id/:aId',(req, res) =>{
 });
 
 
-            });
-          }
-        );
- 
+            
+          
+    });
+  })      
