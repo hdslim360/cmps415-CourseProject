@@ -31,21 +31,27 @@ app.listen(process.env.PORT ||5000, function(err) {
         name: 'John',   
         age: 30,   
         health: 'good',   
-        doctor: 'Love'    
+        doctor: 'Love',    
+        inUse: false,
+        aId: null
       },   
       {
         _id:2,
         name: 'Patrick',
         age: 25,
         health: 'good',
-        doctor: 'Feel Good'
+        doctor: 'Feel Good',
+        inUse: false,
+        aId: null
       },
       {
         _id:3,
         name: 'Ghassan',
         age: 3,
         health: 'good',    
-        doctor: 'Evil'
+        doctor: 'Evil',
+        inUse: false,
+        aId: null
       }    
     ];
     
@@ -67,15 +73,15 @@ app.listen(process.env.PORT ||5000, function(err) {
 
 
        
-      //   emrs.insert(seedData, function(err, result) {
+        //emrs.insert(seedData, function(err, result) {
 
-      //    if(err) throw err;                              //
+        //  if(err) throw err;                              //
       //  });                                               //In case we need to drop or resead the db
       //                                                    //
       
-      // emrs.drop(function (err) {
-      //   if(err) throw err;
-      // });
+       //emrs.drop(function (err) {
+       //  if(err) throw err;
+       //});
               
               emrs.find().toArray(function(err, result) {
                 if (err) throw err;
@@ -95,12 +101,28 @@ app.listen(process.env.PORT ||5000, function(err) {
 
 
               //in postman, type https://murmuring-reaches-97788.herokuapp.com/api/emr/:id and add an int Id for the param
-app.get('/api/emr/:id', (req, res)=> {                  
-  var userId = req.param('id')
-  userId = parseInt(userId);
-   emrs.find( { _id: userId }).toArray(function(err, result){
+app.get('/api/emr/:id/:aId', (req, res)=> {
+
+  var aId = req.param('aId')
+  var patientId = req.param('id');
+  patientId = parseInt(patientId);
+  aId = parseInt(aId);
+  emrs.find( { _id: patientId },{inUse:1}).toArray(function(err, result){
     if(err) throw err;
-    res.status(200).send(result);
+  // Check to see if the record is in use
+  if(result == true){
+    res.status(200).send("Record is in use")
+  }
+   });
+
+  var query = { _id: patientId };
+  var newvalues = { $set: {inUse:true, aId: aId} };
+  emrs.updateOne(query, newvalues, function(err, result) { // insert inUse and user ID into record
+    if (err) throw err;
+  });
+   emrs.find( { _id: patientId }).toArray(function(err, result){
+    if(err) throw err;
+    res.status(200).send(result);  // record is got! and is currently in use. the only person that can use it is the one with the uId
    });
   
 });
