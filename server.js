@@ -175,6 +175,7 @@ app.delete('/api/emr/:id/:aId', (req, res)=> {
     if(err) throw err;
     use = JSON.stringify(result); 
     var myquery = { _id: patientId };
+    emrs.deleteOne(myquery, function(err, result){});
     if(use.includes(aId)){
       emrs.deleteOne(myquery, function(err, result) {
         if (err) throw err;  
