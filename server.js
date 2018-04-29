@@ -32,8 +32,6 @@ app.listen(process.env.PORT ||5000, function(err) {
         age: 30,   
         health: 'good',   
         doctor: 'Love',
-        ts : null,
-        a_id : null
 
       },   
       {
@@ -42,8 +40,6 @@ app.listen(process.env.PORT ||5000, function(err) {
         age: 25,
         health: 'good',
         doctor: 'Feel Good',
-        ts : null,
-        a_id : null
 
       },
       {
@@ -52,8 +48,7 @@ app.listen(process.env.PORT ||5000, function(err) {
         age: 3,
         health: 'good',    
         doctor: 'Evil',
-        ts : null,
-        a_id : null
+
       }    
     ];
     
@@ -74,9 +69,7 @@ app.listen(process.env.PORT ||5000, function(err) {
    
     
       let emrs = db.collection('emr')
-      
-
-       
+      db.emrs.createIndex( { "lastModifiedDate": Date.now }, { expireAfterSeconds: 60 } )
        //emrs.insert(seedData, function(err, result) {
 
         //if(err) throw err;                              //
@@ -86,7 +79,6 @@ app.listen(process.env.PORT ||5000, function(err) {
        //emrs.drop(function (err) {
        //  if(err) throw err;
       // });
-              
               emrs.find().toArray(function(err, result) {
                 if (err) throw err;
                 console.log(result);
@@ -113,6 +105,7 @@ app.get('/api/emr/:id', (req, res)=> {
   emrs.find( { _id: userId }).toArray(function(err, result){// find Doc U want to edit
     if(err) throw err;
     console.log(result);
+    
    });
 
    //if ts == null we good!
@@ -151,7 +144,7 @@ app.get('/api/emr', (req, res)=> {
 //in postman, type https://murmuring-reaches-97788.herokuapp.com/api/emr/create/:id/:age/:name/:health/:doctor add params of course
 app.post('/api/emr/create/:id/:age/:name/:health/:doctor', (req, res)=> {
   if(locked){ // if locked return locked
-    res.status(200).send2("locked")
+    res.status(200).send("locked")
     return;
   }
   locked = true; // lock the db
