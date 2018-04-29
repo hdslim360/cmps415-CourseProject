@@ -114,19 +114,26 @@ app.get('/api/emr/:id/:aId', (req, res)=> {
     if(use.includes("true")){
       isRecordInUse = true;
       res.status(200).send("Locked");
+     }else{
+      var query = { _id: patientId };
+      var newvalues = { $set: {inUse:true, aId: aId} };
+      emrs.updateOne(query, newvalues, function(err, result) { // insert inUse and user ID into record
+          if (err) throw err;
+      });
+      emrs.find( { _id: patientId }).toArray(function(err, result){
+        if(err) throw err;
+        res.status(200).send(result);  // record is got! and is currently in use. the only person that can use it is the one with the uId
+   });
+  
      }
-   });
-if(!isRecordInUse){
-  var query = { _id: patientId };
-  var newvalues = { $set: {inUse:true, aId: aId} };
-  emrs.updateOne(query, newvalues, function(err, result) { // insert inUse and user ID into record
-    if (err) throw err;
-  });
-   emrs.find( { _id: patientId }).toArray(function(err, result){
-    if(err) throw err;
-    res.status(200).send(result);  // record is got! and is currently in use. the only person that can use it is the one with the uId
-   });
-  }
+   
+   
+   
+   
+    });
+
+
+  
 });
           
   //go to postman and type https://murmuring-reaches-97788.herokuapp.com/api/emr up will appear.  
