@@ -112,9 +112,9 @@ app.get('/api/emr/:id/:aId', (req, res)=> {
     if(err) throw err;
     use = JSON.stringify(result); 
     if(use.includes("true")){
+      isRecordInUse = true;
       res.status(200).send("Locked");
      }
-     isRecordInUse = true;
    });
 if(!isRecordInUse){
   var query = { _id: patientId };
