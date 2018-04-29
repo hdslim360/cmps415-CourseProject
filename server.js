@@ -102,23 +102,26 @@ app.listen(process.env.PORT ||5000, function(err) {
 
               //in postman, type https://murmuring-reaches-97788.herokuapp.com/api/emr/:id and add an int Id for the param
 app.get('/api/emr/:id/:aId', (req, res)=> {
-
+  var isRecordInUse = false;
+  var use="";
   var aId = req.param('aId')
   var patientId = req.param('id');
   patientId = parseInt(patientId);
   aId = parseInt(aId);
-  var query = { _id: patientId };
-  emrs.find({query},function(err, result) {
+  emrs.find( { _id: patientId },{ _id:0 ,inUse:1}).toArray(function(err, result){
     if(err) throw err;
-  // Check to see if the record is in use
-  
-  if(result.inUse == 'true'){
-    res.status(200).send(result);
-    return;
-  }
+    use = JSON.stringify(result); 
+    if(use.includes("true")){
+      res.status(200).send("Locked");
+     }
+     isRecordInUse = true;
    });
-
+if(isRecordInUse){
+  return;
+}
   
+
+  var query = { _id: patientId };
   var newvalues = { $set: {inUse:true, aId: aId} };
   emrs.updateOne(query, newvalues, function(err, result) { // insert inUse and user ID into record
     if (err) throw err;
