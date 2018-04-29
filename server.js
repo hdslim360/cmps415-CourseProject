@@ -154,7 +154,9 @@ app.post('/api/emr/create/:id/:age/:name/:health/:doctor', (req, res)=> {
       name: name,   
       age: age,   
       health: health,   
-      doctor: doctor   
+      doctor: doctor, 
+      inUse: false,
+      aid: null   
     },]
     emrs.insert(data, function(err, result) {
       if (err) throw err;
